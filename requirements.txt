@@ -1,0 +1,5 @@
+# Double Ball Gomoku dependencies
+# pygame-ce is the community edition of pygame: a drop-in replacement (still `import pygame`)
+# that ships wheels for Python 3.14. Classic `pygame` (2.6.1) has no 3.14 wheels.
+pygame-ce==2.5.8
+numpy==2.5.4

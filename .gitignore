@@ -1,0 +1,9 @@
+# virtual environment (recreate with: python -m venv .venv && pip install -r requirements.txt)
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Office lock files
+~$*
