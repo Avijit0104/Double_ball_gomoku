@@ -1,8 +1,11 @@
-import numpy as np
+# Board geometry and game rules shared by all game modes.
 
-GRID_START = 50
-CELL_SIZE = 40
-BOARD_SIZE = 15
+GRID_START = 50   # pixel position of the board's top-left corner
+CELL_SIZE = 40    # pixels per square
+BOARD_SIZE = 15   # squares per side
+
+DIRECTIONS = ((0, 1), (1, 0), (1, 1), (1, -1))   # horizontal, vertical, diagonal ↘, diagonal ↙
+
 
 def pos_to_cell(pos):
     # mouse position -> (row, col) on the board, or None if the click is outside the grid
@@ -12,64 +15,19 @@ def pos_to_cell(pos):
         return row, col
     return None
 
+
 def win(arr):
-
-
-
-    #for horizontal checking
-    for k in range(15):
-        for i in range(11):
-            if (arr[k][i] == 1 or arr[k][i] == 2):
-                c=0
-                for j in range(i+1,i+5):
-                    if arr[k][i] == arr[k][j]:
-                        c+=1
-                    else:
-                        break
-                if c==4:
+    # True if five identical stones (either colour) are in a line anywhere on the board
+    for r in range(BOARD_SIZE):
+        for c in range(BOARD_SIZE):
+            v = arr[r][c]
+            if v == 0:
+                continue
+            for dr, dc in DIRECTIONS:
+                end_r, end_c = r + 4*dr, c + 4*dc
+                if 0 <= end_r < BOARD_SIZE and 0 <= end_c < BOARD_SIZE and \
+                        all(arr[r + i*dr][c + i*dc] == v for i in range(1, 5)):
                     return True
-
-    #for vertical checking
-    for k in range(15):
-        for i in range(11):
-            if (arr[i][k] == 1 or arr[i][k] == 2):
-                c=0
-                for j in range(i+1,i+5):
-                    if arr[i][k] == arr[j][k]:
-                        c+=1
-                    else:
-                        break
-                if c==4:
-                    return True
-
-
-    #for digonal_right checking
-    for k in range(11):
-        for i in range(11):
-            if (arr[k][i] == 1 or arr[k][i] == 2):
-                c=0
-                for j in range(1,5):
-                    if arr[k][i] == arr[k+j][i+j]:
-                        c+=1
-                    else:
-                        break
-                if c==4:
-                    return True
-
-    #for digonal_left checking
-    for k in range(11):
-        for i in range(14,3,-1):
-            if (arr[k][i] == 1 or arr[k][i] == 2):
-                c=0
-                for j in range(1,5):
-                    if arr[k][i] == arr[k+j][i-j]:
-                        c+=1
-                    else:
-                        break
-                if c==4:
-                    return True
-
-
     return False
 
 
@@ -87,21 +45,3 @@ def result_message(res):
     if res == "attacker":
         return "Attacker wins!"
     return "Defender wins! (board full)"
-
-
-
-
-# print("hi")
-# print(__name__)
-
-if (__name__ == "__main__"):
-    game_array = np.zeros((15,15),dtype=int)
-    # for i in range(10,15):
-    #     game_array[i][i]=1
-    # game_array[14][0]=2
-    # game_array[13][1]=2
-    # game_array[12][2]=2
-    # game_array[11][3]=2
-    # game_array[10][4]=2
-    print(game_array)
-    print(win(game_array))

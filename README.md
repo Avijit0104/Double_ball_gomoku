@@ -45,27 +45,33 @@ python start.py
 
 > **Why `pygame-ce`?** `requirements.txt` uses [pygame-ce](https://pyga.me/), the community edition of Pygame. It is a drop-in replacement (the code still does `import pygame`) and, unlike classic `pygame`, provides wheels for Python 3.14.
 
-You can also start a mode directly with `python main.py`, `python my_ai.py` or `python my_ai_attacker.py` (run them from the project folder so the images are found).
+You can also start a mode directly with `python main.py`, `python my_ai.py` or `python my_ai_attacker.py`.
 
 ## How the AI works
 
+Both AIs share one way of judging a position (`ai_eval.py`). Every 5-cell line on the board is a "window" where a five could still appear. A window containing stones of only one colour is scored by how many it holds (0, 1, 10, 100, 1000); a window containing both colours can never become five and scores 0. The total over all windows is the board's **danger** — the attacker wants it high, the defender wants it low.
+
 **Defender AI** (`ai_move.py`)
-Every 5-cell line on the board is a "window" where the attacker could still make five. A window containing only one colour is scored by how many stones it holds (0, 1, 10, 100, 1000); a window containing both colours can never become five and scores 0. The defender tries every empty cell with both colours, keeps the moves that lower the attacker's total score the most, then looks one attacker reply ahead and picks the safest move. It never completes a five itself unless every move would.
+Tries every empty cell with both colours, keeps the moves that lower the danger the most, then looks one attacker reply ahead and picks the safest one. It never completes a five itself unless every move would.
 
 **Attacker AI** (`ai_attacker.py`)
-Looks for 5-cell windows holding 4, then 3, 2, 1 stones of one colour and extends that line with the same colour; otherwise it plays next to an existing stone.
+Opens in the centre and completes a five whenever it can. Otherwise it tries every empty cell with both colours, keeps the moves that raise the danger the most, then looks one defender reply ahead — a move that leaves a five the defender can't stop (for example two threats at once) is preferred.
 
-A full write-up of the original design is in `DOUBLE BALL GOMOKU.pdf` / `.docx`. (The defender AI has since been rewritten as described above.)
+> **Balance note:** the attacker never has to defend, can build in either colour and can reuse the defender's stones, so a strong attacker is very hard to stop. In testing, the attacker AI beats the defender AI in about 18 moves; as a human defender, expect a tough game.
+
+The original design write-up is in `DOUBLE BALL GOMOKU.pdf` / `.docx`; both AIs have since been rewritten as described above.
 
 ## Project structure
 
 | File | Purpose |
 |---|---|
-| `start.py` | Menu window — launches the selected mode |
-| `main.py` | 2-player mode |
-| `my_ai.py` | Human attacker vs defender AI |
-| `my_ai_attacker.py` | Attacker AI vs human defender |
-| `game_arr.py` | Shared rules: click → board cell, five-in-a-row check, game result |
+| `start.py` | Menu window — pick a mode and play it in the same window |
+| `main.py` | Starts 2-player mode directly |
+| `my_ai.py` | Starts "you attack, defender AI" directly |
+| `my_ai_attacker.py` | Starts "attacker AI, you defend" directly |
+| `game_ui.py` | Game window shared by all modes: drawing, mouse input, turns, AI players |
+| `game_arr.py` | Rules: click → board cell, five-in-a-row check, game result |
+| `ai_eval.py` | Position scoring shared by both AIs |
 | `ai_move.py` | Defender AI |
 | `ai_attacker.py` | Attacker AI |
 | `football.png`, `black.png` | Stone images |
