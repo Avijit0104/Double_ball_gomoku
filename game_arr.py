@@ -16,8 +16,8 @@ def pos_to_cell(pos):
     return None
 
 
-def win(arr):
-    # True if five identical stones (either colour) are in a line anywhere on the board
+def winning_line(arr):
+    # the five (row, col) cells of a five-in-a-row (either colour), or None if there is none
     for r in range(BOARD_SIZE):
         for c in range(BOARD_SIZE):
             v = arr[r][c]
@@ -27,8 +27,13 @@ def win(arr):
                 end_r, end_c = r + 4*dr, c + 4*dc
                 if 0 <= end_r < BOARD_SIZE and 0 <= end_c < BOARD_SIZE and \
                         all(arr[r + i*dr][c + i*dc] == v for i in range(1, 5)):
-                    return True
-    return False
+                    return [(r + i*dr, c + i*dc) for i in range(5)]
+    return None
+
+
+def win(arr):
+    # True if five identical stones (either colour) are in a line anywhere on the board
+    return winning_line(arr) is not None
 
 
 def result(arr):

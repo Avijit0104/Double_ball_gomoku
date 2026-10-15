@@ -2,12 +2,18 @@
 
 A two-role twist on Gomoku (five in a row), built with **Python**, **Pygame** and **NumPy**.
 
+| Menu | In a game |
+|---|---|
+| ![Menu](screenshots/menu.png) | ![Game](screenshots/game.png) |
+
 On a 15×15 board, stones don't belong to a player — **on every turn you may place either colour**:
 
-| Mouse | Stone |
+| Control | Action |
 |---|---|
-| Left click | White (football) |
-| Right click | Black |
+| Left click | Place a white stone (football) |
+| Right click | Place a black stone |
+| **R** | New game |
+| **Esc** | Back to the menu |
 
 One side is the **Attacker**, the other the **Defender**:
 
@@ -18,7 +24,7 @@ The attacker always moves first. Because the defender's stones can also be used 
 
 ## Game modes
 
-Run the menu and pick a mode:
+Run the menu and pick a mode. The rules and controls are also shown in the game window, along with whose turn it is; the last move is ringed and a winning five is highlighted.
 
 | Button | You play | Opponent |
 |---|---|---|
@@ -65,14 +71,15 @@ The original design write-up is in `DOUBLE BALL GOMOKU.pdf` / `.docx`; both AIs 
 
 | File | Purpose |
 |---|---|
-| `start.py` | Menu window — pick a mode and play it in the same window |
+| `start.py` | Menu window — pick a mode, play it in the same window, Esc to come back |
 | `main.py` | Starts 2-player mode directly |
 | `my_ai.py` | Starts "you attack, defender AI" directly |
 | `my_ai_attacker.py` | Starts "attacker AI, you defend" directly |
-| `game_ui.py` | Game window shared by all modes: drawing, mouse input, turns, AI players |
+| `game_ui.py` | Game window shared by all modes: look and feel, drawing, mouse/keyboard input, turns, AI players |
 | `game_arr.py` | Rules: click → board cell, five-in-a-row check, game result |
 | `ai_eval.py` | Position scoring shared by both AIs |
 | `ai_move.py` | Defender AI |
 | `ai_attacker.py` | Attacker AI |
 | `football.png`, `black.png` | Stone images |
+| `screenshots/` | Images used in this README |
 | `requirements.txt` | Python dependencies |
