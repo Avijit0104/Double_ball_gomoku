@@ -7,3 +7,10 @@ __pycache__/
 
 # Office lock files
 ~$*
+
+# editors / OS
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
